@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package smops;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import smops.hibernate.Business;
 
 /**
  *
@@ -15,8 +19,16 @@ public class SMOPs {
     /**
      * @param args the command line arguments
      */
+    private static SessionFactory sessionFactory;
+
     public static void main(String[] args) {
-        // TODO code application logic here
+        sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+        Business b = new Business();
+        session.beginTransaction();
+        session.save(b);
+        session.getTransaction().commit();
+
     }
-    
+
 }
