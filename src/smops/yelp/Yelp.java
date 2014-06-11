@@ -97,7 +97,7 @@ public class Yelp {
                     biz.setUrl((String) bb.get("url"));
                     biz.setPhone((String) bb.get("phone"));
                     Long review_count = (Long) bb.get("review_count");
-                    biz.setReviewCount(review_count.intValue());
+                    biz.setReviewCount(review_count);
                     if (bb.get("categories") != null) {
                         biz.setCategories((String) bb.get("categories").toString());
                     }

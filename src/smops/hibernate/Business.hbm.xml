@@ -1,65 +1,78 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 4, 2014 11:05:20 AM by Hibernate Tools 3.6.0 -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 4:22:28 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-  <class catalog="smops_db" name="smops.hibernate.Business" table="tbl_business">
-    <id name="id" type="java.lang.Integer">
-      <column name="id"/>
-      <generator class="identity"/>
-    </id>
-    <property name="yelpId" type="string">
-      <column length="128" name="yelp_id"/>
-    </property>
-    <property name="isClaimed" type="java.lang.Boolean">
-      <column name="is_claimed"/>
-    </property>
-    <property name="isClose" type="java.lang.Boolean">
-      <column name="is_close"/>
-    </property>
-    <property name="name" type="string">
-      <column length="512" name="name"/>
-    </property>
-    <property name="url" type="string">
-      <column length="512" name="url"/>
-    </property>
-    <property name="phone" type="string">
-      <column length="128" name="phone"/>
-    </property>
-    <property name="reviewCount" type="java.lang.Integer">
-      <column name="review_count"/>
-    </property>
-    <property name="categories" type="string">
-      <column length="2048" name="categories"/>
-    </property>
-    <property name="rating" type="java.lang.Double">
-      <column name="rating" precision="22" scale="0"/>
-    </property>
-    <property name="snippetText" type="string">
-      <column length="2048" name="snippet_text"/>
-    </property>
-    <property name="address" type="string">
-      <column length="1024" name="address"/>
-    </property>
-    <property name="displayAddress" type="string">
-      <column length="1024" name="display_address"/>
-    </property>
-    <property name="city" type="string">
-      <column length="128" name="city"/>
-    </property>
-    <property name="stateCode" type="string">
-      <column length="128" name="state_code"/>
-    </property>
-    <property name="postalCode" type="string">
-      <column length="128" name="postal_code"/>
-    </property>
-    <property name="countryCode" type="string">
-      <column length="128" name="country_code"/>
-    </property>
-    <property name="neighborhoods" type="string">
-      <column length="2048" name="neighborhoods"/>
-    </property>
-    <property name="website" type="string">
-      <column length="1024" name="website"/>
-    </property>
-  </class>
+    <class name="smops.hibernate.Business" table="business" catalog="smops_db">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="yelpId" type="string">
+            <column name="yelp_id" length="128" />
+        </property>
+        <property name="isClaimed" type="java.lang.Boolean">
+            <column name="is_claimed" />
+        </property>
+        <property name="isClose" type="java.lang.Boolean">
+            <column name="is_close" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="512" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="512" />
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" length="128" />
+        </property>
+        <property name="reviewCount" type="java.lang.Long">
+            <column name="review_count" />
+        </property>
+        <property name="categories" type="string">
+            <column name="categories" length="2048" />
+        </property>
+        <property name="rating" type="java.lang.Double">
+            <column name="rating" precision="22" scale="0" />
+        </property>
+        <property name="snippetText" type="string">
+            <column name="snippet_text" length="2048" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="1024" />
+        </property>
+        <property name="displayAddress" type="string">
+            <column name="display_address" length="1024" />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="128" />
+        </property>
+        <property name="stateCode" type="string">
+            <column name="state_code" length="128" />
+        </property>
+        <property name="postalCode" type="string">
+            <column name="postal_code" length="128" />
+        </property>
+        <property name="countryCode" type="string">
+            <column name="country_code" length="128" />
+        </property>
+        <property name="neighborhoods" type="string">
+            <column name="neighborhoods" length="2048" />
+        </property>
+        <property name="website" type="string">
+            <column name="website" length="1024" />
+        </property>
+        <set name="trackers" table="tracker" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business" />
+            </key>
+            <one-to-many class="smops.hibernate.Tracker" />
+        </set>
+        <set name="forms" table="form" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business" />
+            </key>
+            <one-to-many class="smops.hibernate.Form" />
+        </set>
+    </class>
 </hibernate-mapping>

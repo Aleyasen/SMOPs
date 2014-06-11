@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 4:22:28 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="smops.hibernate.Form" table="form" catalog="smops_db">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="business" class="smops.hibernate.Business" fetch="select">
+            <column name="business" />
+        </many-to-one>
+        <property name="action" type="string">
+            <column name="action" length="1024" />
+        </property>
+        <property name="pageUrl" type="string">
+            <column name="page_url" length="512" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="2048" />
+        </property>
+        <property name="html" type="string">
+            <column name="html" length="65535" />
+        </property>
+        <property name="purpose" type="string">
+            <column name="purpose" length="128" />
+        </property>
+        <property name="fileName" type="string">
+            <column name="file_name" length="512" />
+        </property>
+        <set name="fields" table="field" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="form" />
+            </key>
+            <one-to-many class="smops.hibernate.Field" />
+        </set>
+    </class>
+</hibernate-mapping>
