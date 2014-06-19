@@ -4,16 +4,16 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/smops_db?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/smops_db_prod?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <property name="current_session_context_class">thread</property>
     <!-- Disable the second-level cache  -->
     <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
     <!-- Display and format all executed SQL to stdout -->
     <property name="show_sql">false</property>
-    <property name="format_sql">false</property>
+    <property name="format_sql">true</property>
     <!-- Drop and re-create the database schema on startup -->
-    <property name="hbm2ddl.auto">no</property>
+    <property name="hbm2ddl.auto">update</property>
     <mapping resource="smops/hibernate/TrackerBusiness.hbm.xml"/>
     <mapping resource="smops/hibernate/Tracker.hbm.xml"/>
     <mapping resource="smops/hibernate/JsBusiness.hbm.xml"/>

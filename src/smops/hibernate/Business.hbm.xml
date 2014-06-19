@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 17, 2014 10:27:47 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-    <class name="smops.hibernate.Business" table="business" catalog="smops_db">
+    <class name="smops.hibernate.Business" table="business">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -61,6 +61,15 @@
         </property>
         <property name="website" type="string">
             <column name="website" length="1024" />
+        </property>
+        <property name="domain" type="string">
+            <column name="domain" length="1024" />
+        </property>
+        <property name="source" type="string">
+            <column name="source" length="1024" />
+        </property>
+        <property name="smops" type="java.lang.Boolean">
+            <column name="smops" />
         </property>
         <set name="jsBusinesses" table="js_business" inverse="true" lazy="true" fetch="select">
             <key>

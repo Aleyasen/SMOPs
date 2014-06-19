@@ -1,5 +1,5 @@
 package smops.hibernate;
-// Generated Jun 17, 2014 10:27:47 AM by Hibernate Tools 3.6.0
+// Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -30,6 +30,9 @@ public class Business  implements java.io.Serializable {
      private String countryCode;
      private String neighborhoods;
      private String website;
+     private String domain;
+     private String source;
+     private Boolean smops;
      private Set jsBusinesses = new HashSet(0);
      private Set trackerBusinesses = new HashSet(0);
      private Set forms = new HashSet(0);
@@ -37,7 +40,7 @@ public class Business  implements java.io.Serializable {
     public Business() {
     }
 
-    public Business(String yelpId, Boolean isClaimed, Boolean isClose, String name, String url, String phone, Long reviewCount, String categories, Double rating, String snippetText, String address, String displayAddress, String city, String stateCode, String postalCode, String countryCode, String neighborhoods, String website, Set jsBusinesses, Set trackerBusinesses, Set forms) {
+    public Business(String yelpId, Boolean isClaimed, Boolean isClose, String name, String url, String phone, Long reviewCount, String categories, Double rating, String snippetText, String address, String displayAddress, String city, String stateCode, String postalCode, String countryCode, String neighborhoods, String website, String domain, String source, Boolean smops, Set jsBusinesses, Set trackerBusinesses, Set forms) {
        this.yelpId = yelpId;
        this.isClaimed = isClaimed;
        this.isClose = isClose;
@@ -56,6 +59,9 @@ public class Business  implements java.io.Serializable {
        this.countryCode = countryCode;
        this.neighborhoods = neighborhoods;
        this.website = website;
+       this.domain = domain;
+       this.source = source;
+       this.smops = smops;
        this.jsBusinesses = jsBusinesses;
        this.trackerBusinesses = trackerBusinesses;
        this.forms = forms;
@@ -193,6 +199,27 @@ public class Business  implements java.io.Serializable {
     
     public void setWebsite(String website) {
         this.website = website;
+    }
+    public String getDomain() {
+        return this.domain;
+    }
+    
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+    public String getSource() {
+        return this.source;
+    }
+    
+    public void setSource(String source) {
+        this.source = source;
+    }
+    public Boolean getSmops() {
+        return this.smops;
+    }
+    
+    public void setSmops(Boolean smops) {
+        this.smops = smops;
     }
     public Set getJsBusinesses() {
         return this.jsBusinesses;

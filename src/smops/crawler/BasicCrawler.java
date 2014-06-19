@@ -45,7 +45,7 @@ public class BasicCrawler extends WebCrawler {
         BasicCrawler.currentURL = currentURL;
         BasicCrawler.result_file = result_file;
         BasicCrawler.biz_id = biz_id;
-        domain = getDomain(currentURL);
+        domain = Utils.getDomain(currentURL);
         String flat_url = currentURL.substring(5);
         flat_url = flat_url.replaceAll("/", "");
         //TODO: encode other rejected characters
@@ -75,28 +75,11 @@ public class BasicCrawler extends WebCrawler {
         return !FILTERS.matcher(href).matches() && href.contains(domain);
     }
 
-    public static String getDomain(String url) {
-        System.out.println("url=" + url);
-        int slashslash = 0;
-        if (url.contains("http://") || url.contains("https://")) {
-            slashslash = url.indexOf("//") + 2;
-        }
-        System.out.println("slashslash=" + slashslash);
-        System.out.println("2==" + url.indexOf("/", slashslash));
-        String domain_str = null;
-        if (url.indexOf("/", slashslash) == -1) {
-            domain_str = url.substring(slashslash);
-        } else {
-            domain_str = url.substring(slashslash, url.indexOf("/", slashslash));
-        }
-        System.out.println(domain_str);
-        return domain_str;
-    }
 
     public static void main(String[] args) {
-        getDomain("http://whitehut.com/");
-        getDomain("http://www.frigofoods.com/");
-        getDomain("http://www.sixflags.com/newEngland/index.aspx");
+        Utils.getDomain("http://whitehut.com/");
+        Utils.getDomain("http://www.frigofoods.com/");
+        Utils.getDomain("http://www.sixflags.com/newEngland/index.aspx");
     }
 
     /**

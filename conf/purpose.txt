@@ -1,0 +1,11 @@
+Registration	sign up	sign-up	join	register	registration	new account	create an account	login	log-in	log in	sign in	signin	enroll	connect	logout	authentication	sign-in									
+Order	buy	order	checkout	purchase	pay																					
+User Access	profile	my account	my avatar	my address	my contacts	about myself																				
+Referral	share	invite	post	tell a friend	friend																					
+Contact	contacts	address	contact us	send message	contact																					
+Subscription	newsletter	subscribe	sign up	sign-up	join	email list																				
+Reservation	reserve	reservation	appointment	appoin																						
+User Feedback	comment	feedback	complain																							
+Store Locator	find a location	near you	store location	find a store	find store																					
+Directions
+																						

@@ -1,5 +1,5 @@
 package smops.hibernate;
-// Generated Jun 17, 2014 10:27:47 AM by Hibernate Tools 3.6.0
+// Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0
 
 
 

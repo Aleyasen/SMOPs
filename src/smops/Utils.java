@@ -78,4 +78,22 @@ public class Utils {
         System.out.println(matchJsLib("js/jquery.shuffle.jsp"));
 
     }
+
+    public static String getDomain(String url) {
+        System.out.println("url=" + url);
+        int slashslash = 0;
+        if (url.contains("http://") || url.contains("https://")) {
+            slashslash = url.indexOf("//") + 2;
+        }
+        System.out.println("slashslash=" + slashslash);
+        System.out.println("2==" + url.indexOf("/", slashslash));
+        String domain_str = null;
+        if (url.indexOf("/", slashslash) == -1) {
+            domain_str = url.substring(slashslash);
+        } else {
+            domain_str = url.substring(slashslash, url.indexOf("/", slashslash));
+        }
+        System.out.println(domain_str);
+        return domain_str;
+    }
 }

@@ -32,6 +32,7 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 import smops.HibernateUtil;
+import smops.Utils;
 import smops.hibernate.Business;
 
 /**
@@ -91,6 +92,8 @@ public class Yelp {
                     Business biz = new Business();
 //                    System.out.println(bb.get("is_claimed"));
                     biz.setYelpId((String) bb.get("id"));
+                    biz.setSmops(Boolean.FALSE);
+                    biz.setSource("Yelp");
                     biz.setIsClaimed((Boolean) bb.get("is_claimed"));
                     biz.setIsClose((Boolean) bb.get("is_closed"));
                     biz.setName((String) bb.get("name"));
@@ -254,6 +257,7 @@ public class Yelp {
                     if (website != null) {
                         System.out.println(biz.getYelpId() + " " + biz.getUrl() + " " + website);
                         biz.setWebsite(website);
+                        biz.setDomain(Utils.getDomain(website));
                         session.save(biz);
                         updated++;
                     }
@@ -272,6 +276,7 @@ public class Yelp {
 
     public static void main(String[] args) {
 //        test2();
-        updateBusinessWebsites();
+        extractBizInfo();
+//        updateBusinessWebsites();
     }
 }

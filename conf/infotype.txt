@@ -1,0 +1,17 @@
+Name	surname	firstname	first name	lastname	last name	last_name	your name	your_name	yourname	friend name	friendname	friend_name	fullname	full name	contact name	contactname	contact_name								
+Email	email	e-mail																							
+Mailing Address	address	addr	mailing	~e-mail	~email	~zip	~state	~city	~postalcode	~postal code															
+Phone Number	phone	tell	cell	telephone	tele	fax	~email	~e-mail	~name																
+Username	username	user name																							
+Street	street																								
+City	city	town	~zip																						
+State	state																								
+Zip code	zip	zipcode	zip-code	zip code	postal code																				
+Organization	organization	place of work	affiliation	company																					
+Age	age																								
+Birth Date	birth date	date of birth	birth																						
+Gender	gender	sex																							
+Race	race	ethnicity																							
+Language Preference	language																								
+Terms&Conditions	terms & conditions	terms and conditions	t&c	terms&conditions																					
+Facebook	facebook login	with facebook	facebook sign in	facebook sign up	facebook signin	facebook signup	using facebook	post on facebook	facebook share	facebook like	facebook picker														
