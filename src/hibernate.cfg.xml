@@ -14,9 +14,12 @@
     <property name="format_sql">false</property>
     <!-- Drop and re-create the database schema on startup -->
     <property name="hbm2ddl.auto">no</property>
+    <mapping resource="smops/hibernate/TrackerBusiness.hbm.xml"/>
     <mapping resource="smops/hibernate/Tracker.hbm.xml"/>
+    <mapping resource="smops/hibernate/JsBusiness.hbm.xml"/>
     <mapping resource="smops/hibernate/Business.hbm.xml"/>
     <mapping resource="smops/hibernate/Form.hbm.xml"/>
+    <mapping resource="smops/hibernate/JsLib.hbm.xml"/>
     <mapping resource="smops/hibernate/Field.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

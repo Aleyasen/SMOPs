@@ -6,4 +6,7 @@
     <table-filter match-name="field"/>
     <table-filter match-name="form"/>
     <table-filter match-name="tracker"/>
+    <table-filter match-name="js_business"/>
+    <table-filter match-name="js_lib"/>
+    <table-filter match-name="tracker_business"/>
 </hibernate-reverse-engineering>

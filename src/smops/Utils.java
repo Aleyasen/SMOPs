@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -56,5 +58,24 @@ public class Utils {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    static final String pattern = "([a-zA-Z,0-9,\\-,_,\\.]+)\\.js\\b";
+    static Pattern r = Pattern.compile(pattern);
+
+    public static String matchJsLib(String str) {
+
+        Matcher m = r.matcher(str);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(matchJsLib("js/jquery.shuffle.js?DE"));
+
+        System.out.println(matchJsLib("js/jquery.shuffle.jsp"));
+
     }
 }

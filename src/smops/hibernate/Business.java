@@ -1,5 +1,5 @@
 package smops.hibernate;
-// Generated Jun 10, 2014 4:22:28 PM by Hibernate Tools 3.6.0
+// Generated Jun 17, 2014 10:27:47 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -30,13 +30,14 @@ public class Business  implements java.io.Serializable {
      private String countryCode;
      private String neighborhoods;
      private String website;
-     private Set trackers = new HashSet(0);
+     private Set jsBusinesses = new HashSet(0);
+     private Set trackerBusinesses = new HashSet(0);
      private Set forms = new HashSet(0);
 
     public Business() {
     }
 
-    public Business(String yelpId, Boolean isClaimed, Boolean isClose, String name, String url, String phone, Long reviewCount, String categories, Double rating, String snippetText, String address, String displayAddress, String city, String stateCode, String postalCode, String countryCode, String neighborhoods, String website, Set trackers, Set forms) {
+    public Business(String yelpId, Boolean isClaimed, Boolean isClose, String name, String url, String phone, Long reviewCount, String categories, Double rating, String snippetText, String address, String displayAddress, String city, String stateCode, String postalCode, String countryCode, String neighborhoods, String website, Set jsBusinesses, Set trackerBusinesses, Set forms) {
        this.yelpId = yelpId;
        this.isClaimed = isClaimed;
        this.isClose = isClose;
@@ -55,7 +56,8 @@ public class Business  implements java.io.Serializable {
        this.countryCode = countryCode;
        this.neighborhoods = neighborhoods;
        this.website = website;
-       this.trackers = trackers;
+       this.jsBusinesses = jsBusinesses;
+       this.trackerBusinesses = trackerBusinesses;
        this.forms = forms;
     }
    
@@ -192,12 +194,19 @@ public class Business  implements java.io.Serializable {
     public void setWebsite(String website) {
         this.website = website;
     }
-    public Set getTrackers() {
-        return this.trackers;
+    public Set getJsBusinesses() {
+        return this.jsBusinesses;
     }
     
-    public void setTrackers(Set trackers) {
-        this.trackers = trackers;
+    public void setJsBusinesses(Set jsBusinesses) {
+        this.jsBusinesses = jsBusinesses;
+    }
+    public Set getTrackerBusinesses() {
+        return this.trackerBusinesses;
+    }
+    
+    public void setTrackerBusinesses(Set trackerBusinesses) {
+        this.trackerBusinesses = trackerBusinesses;
     }
     public Set getForms() {
         return this.forms;

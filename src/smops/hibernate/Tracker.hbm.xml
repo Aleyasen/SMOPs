@@ -1,21 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 10, 2014 4:22:28 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated Jun 17, 2014 10:27:47 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="smops.hibernate.Tracker" table="tracker" catalog="smops_db">
-        <id name="id" type="java.lang.Integer">
+        <id name="id" type="int">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="assigned" />
         </id>
-        <many-to-one name="business" class="smops.hibernate.Business" fetch="select">
-            <column name="business" />
-        </many-to-one>
-        <property name="type" type="java.lang.Integer">
-            <column name="type" />
+        <property name="name" type="string">
+            <column name="name" length="1024" />
         </property>
-        <property name="url" type="string">
-            <column name="url" length="2048" />
+        <property name="description" type="string">
+            <column name="description" length="2048" />
         </property>
+        <property name="type" type="string">
+            <column name="type" length="256" />
+        </property>
+        <set name="trackerBusinesses" table="tracker_business" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tracker" />
+            </key>
+            <one-to-many class="smops.hibernate.TrackerBusiness" />
+        </set>
     </class>
 </hibernate-mapping>

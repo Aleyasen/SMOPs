@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 17, 2014 10:27:47 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="smops.hibernate.JsBusiness" table="js_business" catalog="smops_db">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="business" class="smops.hibernate.Business" fetch="select">
+            <column name="business" />
+        </many-to-one>
+        <many-to-one name="jsLib" class="smops.hibernate.JsLib" fetch="select">
+            <column name="js_lib" />
+        </many-to-one>
+        <property name="url" type="string">
+            <column name="url" length="2048" />
+        </property>
+    </class>
+</hibernate-mapping>

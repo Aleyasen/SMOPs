@@ -15,8 +15,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,6 +31,8 @@ import smops.dao.InfoType;
 import smops.hibernate.Business;
 import smops.hibernate.Field;
 import smops.hibernate.Form;
+import smops.hibernate.JsBusiness;
+import smops.hibernate.JsLib;
 import smops.yelp.Yelp;
 
 /**
@@ -41,82 +48,101 @@ public class PageAnalyzer {
             File input = new File(filepath);
             Document doc = Jsoup.parse(input, "UTF-8");
 //            System.out.println(doc);
-            Elements form_elements = doc.select("form");
-//            System.out.println(biz_website_a.toString());
-            if (form_elements != null) {
-                for (Element f : form_elements) {
-                    int numberOfValidInputs = getNumberOfValidInputs(f);
-                    if (numberOfValidInputs == 0) {
-                        continue;
-                    }
-//                    session.beginTransaction();
-                    Form form_obj = new Form();
-                    String action = f.attr("action");
-                    String form_html = f.html();
-                    String form_text = f.text();
-                    boolean isAccepted = isAcceptedForm(form_obj, action, form_html, form_text, current_form_bodies);
-                    if (!isAccepted) {
-                        continue;
-                    }
-                    String title = getBestTitle(f);
-                    String purpose = getBestPurpose(f);
-                    form_obj.setAction(action);
-                    form_obj.setBusiness(business);
-                    form_obj.setFileName(input.getName());
-                    form_obj.setPageUrl(url);
-                    form_obj.setTitle(Utils.truncate(title, 2048));
-                    form_obj.setHtml(Utils.truncate(form_html, 65535));
-                    form_obj.setPurpose(purpose);
-                    session.beginTransaction();
-                    session.save(form_obj);
-
-                    session.getTransaction().commit();
-                    session.flush();
-                    System.out.println("form_obj=" + form_obj.getId());
-                    session.refresh(form_obj);
-                    System.out.println("form=" + form_obj);
-//                    session.getTransaction().commit();
-
-                    final Elements inputs = f.select("input");
-                    int input_count = 0;
-//                    session.beginTransaction();
-                    for (Element i : inputs) {
-                        String type = i.attr("type");
-                        if (!type.equals("text")) {
-                            continue;
-                        }
-                        input_count++;
-                        String name = i.attr("name");
-                        String value = i.attr("value");
-                        String html = i.html();
-                        String label = getBestLabel(i);
-                        String infoType = getBestInfoType(i);
-                        Field field = new Field();
-                        field.setType(type);
-                        field.setName(name);
-                        field.setValue(Utils.truncate(value, 512));
-                        field.setLabel(Utils.truncate(label, 1024));
-                        field.setHtml(html);
-                        field.setInfoType(infoType);
-                        field.setForm(form_obj);
-                        form_obj.getFields().add(field);
-//                        System.out.println("field=" + field);
-                        session.beginTransaction();
-                        session.saveOrUpdate(form_obj);
-                        session.save(field);
-                        session.getTransaction().commit();
-
-                    }
-                    session.save(form_obj);
-//                    session.getTransaction().commit();
-                    System.out.println("Input#:" + input_count);
-                }
-            }
+            analyseForms(doc, current_form_bodies, business, input, url, session);
             return current_form_bodies;
         } catch (IOException ex) {
             Logger.getLogger(Yelp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static Set<String> saveJSLibs(String url, String filepath, Business business, Set<String> current_js_libs) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
+            File input = new File(filepath);
+            Document doc = Jsoup.parse(input, "UTF-8");
+            analyseJS(doc, current_js_libs, business, input, url, session);
+            return current_js_libs;
+        } catch (IOException ex) {
+            Logger.getLogger(Yelp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    private static void analyseForms(Document doc, Set<String> current_form_bodies, Business business, File input, String url, Session session) throws HibernateException {
+        Elements form_elements = doc.select("form");
+
+//            System.out.println(biz_website_a.toString());
+        if (form_elements != null) {
+            for (Element f : form_elements) {
+                int numberOfValidInputs = getNumberOfValidInputs(f);
+                if (numberOfValidInputs == 0) {
+                    continue;
+                }
+//                    session.beginTransaction();
+                Form form_obj = new Form();
+                String action = f.attr("action");
+                String form_html = f.html();
+                String form_text = f.text();
+                boolean isAccepted = isAcceptedForm(form_obj, action, form_html, form_text, current_form_bodies);
+                if (!isAccepted) {
+                    continue;
+                }
+                String title = getBestTitle(f);
+                String purpose = getBestPurpose(f);
+                form_obj.setAction(action);
+                form_obj.setBusiness(business);
+                form_obj.setFileName(input.getName());
+                form_obj.setPageUrl(url);
+                form_obj.setTitle(Utils.truncate(title, 2048));
+                form_obj.setHtml(Utils.truncate(form_html, 65535));
+                form_obj.setPurpose(purpose);
+                session.beginTransaction();
+                session.save(form_obj);
+
+                session.getTransaction().commit();
+                session.flush();
+                System.out.println("form_obj=" + form_obj.getId());
+                session.refresh(form_obj);
+                System.out.println("form=" + form_obj);
+//                    session.getTransaction().commit();
+
+                final Elements inputs = f.select("input");
+                int input_count = 0;
+//                    session.beginTransaction();
+                for (Element i : inputs) {
+                    String type = i.attr("type");
+                    if (!type.equals("text")) {
+                        continue;
+                    }
+                    input_count++;
+                    String name = i.attr("name");
+                    String value = i.attr("value");
+                    String html = i.html();
+                    String label = getBestLabel(i);
+                    String infoType = getBestInfoType(i);
+                    Field field = new Field();
+                    field.setType(type);
+                    field.setName(name);
+                    field.setValue(Utils.truncate(value, 512));
+                    field.setLabel(Utils.truncate(label, 1024));
+                    field.setHtml(html);
+                    field.setInfoType(infoType);
+                    field.setForm(form_obj);
+                    form_obj.getFields().add(field);
+//                        System.out.println("field=" + field);
+                    session.beginTransaction();
+                    session.saveOrUpdate(form_obj);
+                    session.save(field);
+                    session.getTransaction().commit();
+
+                }
+                session.save(form_obj);
+//                    session.getTransaction().commit();
+                System.out.println("Input#:" + input_count);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -141,11 +167,14 @@ public class PageAnalyzer {
         for (Integer biz_id : crawlInfoMap.keySet()) {
             final Business biz = (Business) session.get(Business.class, biz_id);
             Set<String> current_form_bodies = new HashSet<>();
+            Set<String> current_js_libs = new HashSet<>();
             for (String others : crawlInfoMap.get(biz_id)) {
                 String[] splits = others.split("\t");
                 String url = splits[0];
                 String file_path = splits[1];
-                current_form_bodies = saveFormsAndFields(url, file_path, biz, current_form_bodies);
+//                current_form_bodies = saveFormsAndFields(url, file_path, biz, current_form_bodies);
+
+                current_js_libs = saveJSLibs(url, file_path, biz, current_js_libs);
 
             }
         }
@@ -281,4 +310,52 @@ public class PageAnalyzer {
             return true;
         }
     }
+
+    private static void analyseJS(Document doc, Set<String> current_js_libs, Business business, File input, String url, Session session) {
+
+        Elements js_tags = doc.select("script");
+//        System.out.println("url=" + url);
+        int count = 0;
+        for (Element js_tag : js_tags) {
+            String src = js_tag.attr("src");
+            count++;
+            if (src != null && src.length() > 0) {
+                final String jslib = Utils.matchJsLib(src);
+                if (current_js_libs.contains(jslib)) {
+
+                } else {
+                    JsLib jslibObj = getJsLibObj(jslib, session);
+                    if (jslibObj != null) {
+                        current_js_libs.add(jslib);
+                        JsBusiness jsbiz = new JsBusiness();
+                        jsbiz.setBusiness(business);
+                        jsbiz.setJsLib(jslibObj);
+                        jsbiz.setUrl(src);
+                        session.beginTransaction();
+                        session.save(jsbiz);
+                        session.getTransaction().commit();
+                    }
+                }
+
+                System.out.println(count + " " + jslib + " - " + src);
+            }
+        }
+        System.out.println();
+    }
+
+    private static JsLib getJsLibObj(String jslib, Session session) {
+        Criteria criteria = session.createCriteria(JsLib.class);
+        JsLib jslibObj = (JsLib) criteria.add(Restrictions.eq("name", jslib)).uniqueResult();
+        if (jslibObj == null) {
+            JsLib newJslibObj = new JsLib();
+            newJslibObj.setName(jslib);
+            session.beginTransaction();
+            session.save(newJslibObj);
+            session.getTransaction().commit();
+            return newJslibObj;
+        } else {
+            return jslibObj;
+        }
+    }
+
 }
