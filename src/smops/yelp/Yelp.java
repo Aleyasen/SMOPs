@@ -10,7 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.HibernateException;
@@ -80,6 +82,7 @@ public class Yelp {
             this.service.signRequest(this.accessToken, request);
             Response response = request.send();
             String result = response.getBody();
+//            System.out.println("response=" + result);
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(result);
             JSONObject jobj = (JSONObject) obj;
@@ -132,12 +135,35 @@ public class Yelp {
     }
 
     // CLI
+    final static String CONSUMER_KEY = "consumerKey";
+    final static String CONSUMER_SECRET = "consumerSecret";
+    final static String TOKEN = "token";
+    final static String TOKEN_SECRET = "tokenSecret";
+
+    final static List<Map<String, String>> keys = new ArrayList<Map<String, String>>();
+
+    static {
+        Map<String, String> map0 = new HashMap<String, String>();
+        map0.put(CONSUMER_KEY, "bUqHveQ5zDVI7j41OGiQKg");
+        map0.put(CONSUMER_SECRET, "zTVPyd-9I98vFvRkVmdmma1YDWU");
+        map0.put(TOKEN, "-Ol-9hs0AL_OOyvZql1jOOSjE0w2Q2I0");
+        map0.put(TOKEN_SECRET, "wN2s5TgFxI0r8WqAR9nvtbo2MsA");
+        keys.add(0, map0);
+        Map<String, String> map1 = new HashMap<String, String>();
+        map1.put(CONSUMER_KEY, "PK1nhXzknZXZuZd2bk3JqQ");
+        map1.put(CONSUMER_SECRET, "DSETcYp_JuBQSyeQdcKbdn6UlAg");
+        map1.put(TOKEN, "u26wLOoAtZ_83RoiqbXsWOShsANDY20z");
+        map1.put(TOKEN_SECRET, "hYApFKotuoZKNJPt38_Uz8VePGo");
+        keys.add(1, map1);
+    }
+
     public static void extractBizInfo() {
         // Update tokens here from Yelp developers site, Manage API access.
-        String consumerKey = "PK1nhXzknZXZuZd2bk3JqQ";
-        String consumerSecret = "DSETcYp_JuBQSyeQdcKbdn6UlAg";
-        String token = "hOMKXbd7pU0_g2aR2D5HGPZdz-5z5DeE";
-        String tokenSecret = "ty2p-Bhb47Cun2Zzr6P5wgVthnk";
+        int index = 0;
+        String consumerKey = keys.get(index).get(CONSUMER_KEY);
+        String consumerSecret = keys.get(index).get(CONSUMER_SECRET);
+        String token = keys.get(index).get(TOKEN);
+        String tokenSecret = keys.get(index).get(TOKEN_SECRET);
 
         Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
         // +48.987386 is the northern most latitude 
