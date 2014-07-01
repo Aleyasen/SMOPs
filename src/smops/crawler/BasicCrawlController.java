@@ -35,12 +35,19 @@ public class BasicCrawlController {
     static String crawlDataIntermediateDir = "crawl-int";
 
     public static void main(String[] args) {
+
+        String rootFolder = "crawl-temp";
+        String resultFile = "crawled-list-temp.txt";
+        crawl(rootFolder, 1, "http://www.whitehut.com", 5, resultFile);
+    }
+
+    public static void main2(String[] args) {
         String rootFolder = "crawl";
         String resultFile = "crawled-list.txt";
-        final List<Business> bizlist = BusinessManager.getBusinesses(100, 200);
+        final List<Business> bizlist = BusinessManager.getBusinesses(0, 100);
         for (Business biz : bizlist) {
             if (biz.getWebsite() != null && biz.getWebsite().length() > 0) {
-                crawl(rootFolder, 2, biz.getWebsite(), biz.getId(), resultFile);
+                crawl(rootFolder, 1, biz.getWebsite(), biz.getId(), resultFile);
 //                BasicCrawler.getDomain(biz.getWebsite());
             }
         }

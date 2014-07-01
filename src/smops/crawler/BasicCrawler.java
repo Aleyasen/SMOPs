@@ -22,11 +22,15 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.IO;
 import java.io.File;
+import java.io.IOException;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
+import org.jsoup.Jsoup;
 import smops.Utils;
 
 /**
@@ -46,6 +50,9 @@ public class BasicCrawler extends WebCrawler {
         BasicCrawler.result_file = result_file;
         BasicCrawler.biz_id = biz_id;
         domain = Utils.getDomain(currentURL);
+        if (domain.startsWith("www.")) {
+            domain = domain.substring(4);
+        }
         String flat_url = currentURL.substring(5);
         flat_url = flat_url.replaceAll("/", "");
         //TODO: encode other rejected characters
@@ -71,10 +78,24 @@ public class BasicCrawler extends WebCrawler {
      */
     @Override
     public boolean shouldVisit(WebURL url) {
+//        System.out.println("domain==========" + domain);
         String href = url.getURL().toLowerCase();
-        return !FILTERS.matcher(href).matches() && href.contains(domain);
-    }
+//        System.out.println("hre=====" + href);
 
+        if (href.contains(".css") || href.contains(".js")) {
+            return false;
+        }
+        if (href.contains(domain)) {
+            return true;
+        }
+        return false;
+//        String href = url.getURL().toLowerCase();
+//        System.out.println("shoudVisit=" + href);
+//
+//        System.out.println("result=" + (!FILTERS.matcher(href).matches()));
+//
+//        return !FILTERS.matcher(href).matches() && href.contains(domain);
+    }
 
     public static void main(String[] args) {
         Utils.getDomain("http://whitehut.com/");
@@ -122,6 +143,7 @@ public class BasicCrawler extends WebCrawler {
         }
 
         Header[] responseHeaders = page.getFetchResponseHeaders();
+
         if (responseHeaders != null) {
             System.out.println("Response headers:");
             for (Header header : responseHeaders) {
