@@ -22,15 +22,11 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.IO;
 import java.io.File;
-import java.io.IOException;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
-import org.jsoup.Jsoup;
 import smops.Utils;
 
 /**
@@ -78,9 +74,12 @@ public class BasicCrawler extends WebCrawler {
      */
     @Override
     public boolean shouldVisit(WebURL url) {
+        if (1 == 1) {
+            return true;
+        }
 //        System.out.println("domain==========" + domain);
         String href = url.getURL().toLowerCase();
-//        System.out.println("hre=====" + href);
+        System.out.println("hre=====" + href);
 
         if (href.contains(".css") || href.contains(".js")) {
             return false;

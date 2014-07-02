@@ -136,7 +136,7 @@ public class BusinessManager {
                     Field field = (Field) inp;
                     fields_infoType.add(field.getInfoType());
                 }
-                for (String inftype : InfoType.forms_types) {
+                for (String inftype : Constants.infoType_keywords.keySet()) {
                     if (fields_infoType.contains(inftype)) {
                         System.out.print("1\t");
                     } else {

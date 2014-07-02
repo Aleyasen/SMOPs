@@ -34,20 +34,22 @@ public class BasicCrawlController {
 
     static String crawlDataIntermediateDir = "crawl-int";
 
-    public static void main(String[] args) {
-
+    public static void main2(String[] args) {
+//
         String rootFolder = "crawl-temp";
         String resultFile = "crawled-list-temp.txt";
-        crawl(rootFolder, 1, "http://www.whitehut.com", 5, resultFile);
+        crawl(rootFolder, 1, "http://longmeadowlibrary.wordpress.com", 197, resultFile);
     }
 
-    public static void main2(String[] args) {
+    public static void main(String[] args) {
         String rootFolder = "crawl";
         String resultFile = "crawled-list.txt";
         final List<Business> bizlist = BusinessManager.getBusinesses(0, 100);
         for (Business biz : bizlist) {
             if (biz.getWebsite() != null && biz.getWebsite().length() > 0) {
+                System.out.println("start crawling = " + biz.getWebsite());
                 crawl(rootFolder, 1, biz.getWebsite(), biz.getId(), resultFile);
+                System.out.println("crawling " + biz.getWebsite() + " done.");
 //                BasicCrawler.getDomain(biz.getWebsite());
             }
         }
@@ -90,7 +92,7 @@ public class BasicCrawlController {
              * You can set the maximum number of pages to crawl. The default value
              * is -1 for unlimited number of pages
              */
-            config.setMaxPagesToFetch(1000);
+            config.setMaxPagesToFetch(10000);
 
             /*
              * Do you need to set a proxy? If so, you can use:
@@ -123,6 +125,7 @@ public class BasicCrawlController {
              * which are found in these pages
              */
             controller.addSeed(url);
+            System.out.println("url====" + url);
 
             /*
              * Start the crawl. This is a blocking operation, meaning that your code

@@ -26,8 +26,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import smops.dao.FormPurpose;
-import smops.dao.InfoType;
 import smops.hibernate.Business;
 import smops.hibernate.Field;
 import smops.hibernate.Form;
@@ -273,7 +271,7 @@ public class PageAnalyzer {
                 return purpose;
             }
         }
-        return FormPurpose.UNKNOWN;
+        return "UNKNOWN";
     }
 
     private static String getBestInfoType(Element input) {
@@ -295,7 +293,7 @@ public class PageAnalyzer {
                 return infoType;
             }
         }
-        return InfoType.UNKNOWN;
+        return "UNKNOWN";
 
     }
 
