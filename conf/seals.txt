@@ -1,0 +1,9 @@
+TRUSTE	privacy.truste.com	TRUSTe Certified Privacy Seal
+WEB_TRUST	cert.webtrust.org	WebTrust
+BBB_ONLINE	bbb.org	BBB OnLine Reliability Program
+EPRIVACY	eprivacyconsult.com	ePrivacy
+NAI	networkadvertising.org	Network Advertising Initiative
+DAA	aboutads.info	Digital Advertising Alliance
+MCAFEE	mcafeesecure.com/RatingVerify	McAfee Secure
+VERY_SIGN	seal.verisign.com/getseal	VerySign
+GLOBAL_SIGN	globalsign.com	GlobalSign

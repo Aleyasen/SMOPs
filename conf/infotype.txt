@@ -1,17 +1,23 @@
-NAME	surname	firstname	first name	lastname	last name	last_name	your name	your_name	yourname	friend name	friendname	friend_name	fullname	full name	contact name	contactname	contact_name								
-EMAIL	email	e-mail																							
-MAILING_ADDRESS	address	addr	mailing	~e-mail	~email	~zip	~state	~city	~postalcode	~postal code															
-PHONE_NUMBER	phone	tell	cell	telephone	tele	fax	~email	~e-mail	~name																
-USERNAME	username	user name																							
-STREET	street																								
-CITY	city	town	~zip																						
-STATE	state																								
-ZIP_CODE	zip	zipcode	zip-code	zip code	postal code																				
-ORGANIZATION	organization	place of work	affiliation	company																					
-AGE	age																								
-BIRTH_DATE	birth date	date of birth	birth																						
-GENDER	gender	sex																							
-RACE	race	ethnicity																							
-LANGUAGE_PREFERENCE	language																								
-TERMS_CONDITIONS	terms & conditions	terms and conditions	t&c	terms&conditions																					
-FACEBOOK	facebook login	with facebook	facebook sign in	facebook sign up	facebook signin	facebook signup	using facebook	post on facebook	facebook share	facebook like	facebook picker														
+NAME	surname	firstname	first name	first_name	lastname	last name	last_name	middle_name	middlename	middle name	your name	your_name	yourname	friend name	friendname	friend_name	fullname	full name	contact name	contactname	contact_name	full_name	author	sendername	sender_name	sender name	fromname	from_name	namefirst	name_first	name first	namelast	name_last	name last	fname	lname	your-name	from_name	fromname	to_name	toname   
+EMAIL	email	e-mail	
+MAILING_ADDRESS	address	addr	mailing	~e-mail	~email	~zip	~state	~city	~postalcode	~postal code	
+PHONE_NUMBER	phone	tell	cell	telephone	tele	fax	usertel	user_tel	user tel	mobile	~email	~e-mail	~name							
+USERNAME	username	user name	user_name	user-name														
+PASSWORD	password	
+PHOTO	photo	
+RESUME	resume	
+STREET	street															
+CITY	city	town	~zip													
+STATE	state															
+ZIP_CODE	zip	zipcode	zip-code	zip code	postal code	postalcode										
+ORGANIZATION	organization	place of work	affiliation	company												
+AGE	 age 															
+BIRTH_DATE	birth													
+GENDER	gender	sex	female	male														
+RACE	race	ethnicity														
+SSN	social security number	ssn	social_security	social-security	driver license	driver_license	driverlicense	
+HEALTH	health rate	disease																
+FINANCIAL	credit card	credit_card	creditcard	visa card	visa_card	visacard	card number	card_number	cardnamuber	income																
+LANGUAGE_PREFERENCE	language															
+TERMS_CONDITIONS	terms & conditions	terms and conditions	t&c	terms&conditions												
+FACEBOOK	facebook login	with facebook	facebook sign in	facebook sign up	facebook signin	facebook signup	using facebook	post on facebook	facebook share	facebook like	facebook picker					
