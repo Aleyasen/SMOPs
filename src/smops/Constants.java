@@ -25,6 +25,14 @@ public class Constants {
     public static Map<String, List<String>> purpose_keywords = new HashMap<String, List<String>>();
     public static Map<String, List<String>> infoType_keywords = new HashMap<String, List<String>>();
 
+    public static Map<String, List<String>> impPages_keywords = new HashMap<String, List<String>>();
+
+    static {
+        purpose_keywords = initMap("conf/purpose.txt");
+        infoType_keywords = initMap("conf/infotype.txt");
+        impPages_keywords = initMap("conf/pages.txt");
+    }
+
     public static Map<String, List<String>> initMap(String filepath) {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
         BufferedReader br = null;
@@ -59,6 +67,10 @@ public class Constants {
         return getKey(str, infoType_keywords);
     }
 
+    public static String getImpPage(String str) {
+        return getKey(str, impPages_keywords);
+    }
+
     public static String getKey(String str, Map<String, List<String>> map) {
         String norm_str = str.toLowerCase();
         for (String key : map.keySet()) {
@@ -91,10 +103,11 @@ public class Constants {
     public static void main(String[] args) {
 //        System.out.println(isContains("zip Code*", infoType_keywords.get(InfoType.MAILING_ADDRESS)));
 
-        purpose_keywords = initMap("conf/purpose.txt");
-        infoType_keywords = initMap("conf/infotype.txt");
-        for (String key : infoType_keywords.keySet()) {
-            System.out.println(key + "  ==> " + infoType_keywords.get(key));
+//        purpose_keywords = initMap("conf/purpose.txt");
+//        infoType_keywords = initMap("conf/infotype.txt");
+        impPages_keywords = initMap("conf/pages.txt");
+        for (String key : impPages_keywords.keySet()) {
+            System.out.println(key + "  ==> " + impPages_keywords.get(key));
         }
     }
 }

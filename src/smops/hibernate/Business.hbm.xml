@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated Jul 15, 2014 3:02:41 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-    <class name="smops.hibernate.Business" table="business">
+    <class name="smops.hibernate.Business" table="business" catalog="smops_db">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -18,10 +18,10 @@
             <column name="is_close" />
         </property>
         <property name="name" type="string">
-            <column name="name" length="512" />
+            <column name="name" />
         </property>
         <property name="url" type="string">
-            <column name="url" length="512" />
+            <column name="url" />
         </property>
         <property name="phone" type="string">
             <column name="phone" length="128" />
@@ -30,19 +30,19 @@
             <column name="review_count" />
         </property>
         <property name="categories" type="string">
-            <column name="categories" length="2048" />
+            <column name="categories" />
         </property>
         <property name="rating" type="java.lang.Double">
             <column name="rating" precision="22" scale="0" />
         </property>
         <property name="snippetText" type="string">
-            <column name="snippet_text" length="2048" />
+            <column name="snippet_text" />
         </property>
         <property name="address" type="string">
-            <column name="address" length="1024" />
+            <column name="address" />
         </property>
         <property name="displayAddress" type="string">
-            <column name="display_address" length="1024" />
+            <column name="display_address" />
         </property>
         <property name="city" type="string">
             <column name="city" length="128" />
@@ -57,37 +57,118 @@
             <column name="country_code" length="128" />
         </property>
         <property name="neighborhoods" type="string">
-            <column name="neighborhoods" length="2048" />
+            <column name="neighborhoods" />
         </property>
         <property name="website" type="string">
-            <column name="website" length="1024" />
+            <column name="website" />
         </property>
         <property name="domain" type="string">
-            <column name="domain" length="1024" />
+            <column name="domain" />
         </property>
         <property name="source" type="string">
-            <column name="source" length="1024" />
+            <column name="source" />
         </property>
         <property name="smops" type="java.lang.Boolean">
             <column name="smops" />
         </property>
-        <set name="jsBusinesses" table="js_business" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="business" />
-            </key>
-            <one-to-many class="smops.hibernate.JsBusiness" />
-        </set>
+        <property name="serverType" type="string">
+            <column name="server_type" />
+        </property>
+        <property name="supportLogin" type="java.lang.Boolean">
+            <column name="support_login" />
+        </property>
+        <property name="isThirdPartyLogin" type="java.lang.Boolean">
+            <column name="is_third_party_login" />
+        </property>
+        <property name="thirdPartyLoginList" type="string">
+            <column name="third_party_login_list" />
+        </property>
+        <property name="isTrackerAds" type="java.lang.Boolean">
+            <column name="is_tracker_ads" />
+        </property>
+        <property name="isCrawled" type="java.lang.Boolean">
+            <column name="is_crawled" />
+        </property>
+        <property name="numPages" type="java.lang.Integer">
+            <column name="num_pages" />
+        </property>
+        <property name="hasCookie" type="java.lang.Boolean">
+            <column name="has_cookie" />
+        </property>
+        <property name="cookieLifetime" type="java.lang.Integer">
+            <column name="cookie_lifetime" />
+        </property>
+        <property name="hasContactUs" type="java.lang.Boolean">
+            <column name="has_contact_us" />
+        </property>
+        <property name="hasPrivacyPolicy" type="java.lang.Boolean">
+            <column name="has_privacy_policy" />
+        </property>
+        <property name="hasEmailAddress" type="java.lang.Boolean">
+            <column name="has_email_address" />
+        </property>
+        <property name="hasPhoneNumber" type="java.lang.Boolean">
+            <column name="has_phone_number" />
+        </property>
+        <property name="hasPhysicalAddress" type="java.lang.Boolean">
+            <column name="has_physical_address" />
+        </property>
+        <property name="contactUsUrl" type="string">
+            <column name="contact_us_url" length="1024" />
+        </property>
+        <property name="contactUsAnchorText" type="string">
+            <column name="contact_us_anchor_text" length="1024" />
+        </property>
+        <property name="privacyPolicyUrl" type="string">
+            <column name="privacy_policy_url" length="1024" />
+        </property>
+        <property name="privacyPolicyAnchorText" type="string">
+            <column name="privacy_policy_anchor_text" length="1024" />
+        </property>
+        <property name="wbEmailAddress" type="string">
+            <column name="wb_email_address" length="1024" />
+        </property>
+        <property name="wbPhoneNumber" type="string">
+            <column name="wb_phone_number" length="1024" />
+        </property>
+        <property name="wbPhysicalAddress" type="string">
+            <column name="wb_physical_address" length="1024" />
+        </property>
+        <property name="loginUrl" type="string">
+            <column name="login_url" length="1024" />
+        </property>
+        <property name="loginAnchorText" type="string">
+            <column name="login_anchor_text" length="1024" />
+        </property>
+        <property name="websiteType" type="string">
+            <column name="website_type" length="512" />
+        </property>
+        <property name="rank" type="java.lang.Integer">
+            <column name="rank" />
+        </property>
         <set name="trackerBusinesses" table="tracker_business" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="business" />
             </key>
             <one-to-many class="smops.hibernate.TrackerBusiness" />
         </set>
+        <set name="sealBusinesses" table="seal_business" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business" />
+            </key>
+            <one-to-many class="smops.hibernate.SealBusiness" />
+        </set>
         <set name="forms" table="form" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="business" />
             </key>
             <one-to-many class="smops.hibernate.Form" />
+        </set>
+        <set name="jsBusinesses" table="js_business" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business" />
+            </key>
+            <one-to-many class="smops.hibernate.JsBusiness" />
         </set>
     </class>
 </hibernate-mapping>

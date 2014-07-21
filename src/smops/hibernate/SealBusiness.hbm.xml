@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 15, 2014 3:02:41 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-    <class name="smops.hibernate.TrackerBusiness" table="tracker_business" catalog="smops_db">
+    <class name="smops.hibernate.SealBusiness" table="seal_business" catalog="smops_db">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -11,14 +11,14 @@
         <many-to-one name="business" class="smops.hibernate.Business" fetch="select">
             <column name="business" />
         </many-to-one>
-        <property name="trackerUrl" type="string">
-            <column name="tracker_url" length="1024" />
+        <property name="seal" type="string">
+            <column name="seal" length="1024" />
         </property>
-        <property name="type" type="string">
-            <column name="type" length="512" />
+        <property name="sealUrl" type="string">
+            <column name="seal_url" length="1024" />
         </property>
-        <property name="fullUrl" type="string">
-            <column name="full_url" length="2048" />
+        <property name="sealAnchorText" type="string">
+            <column name="seal_anchor_text" length="1024" />
         </property>
     </class>
 </hibernate-mapping>

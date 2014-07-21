@@ -1,5 +1,5 @@
 package smops.hibernate;
-// Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0
+// Generated Jul 15, 2014 3:02:40 PM by Hibernate Tools 3.6.0
 
 
 
@@ -11,18 +11,18 @@ public class TrackerBusiness  implements java.io.Serializable {
 
      private Integer id;
      private Business business;
-     private Tracker tracker;
-     private Integer type;
-     private String url;
+     private String trackerUrl;
+     private String type;
+     private String fullUrl;
 
     public TrackerBusiness() {
     }
 
-    public TrackerBusiness(Business business, Tracker tracker, Integer type, String url) {
+    public TrackerBusiness(Business business, String trackerUrl, String type, String fullUrl) {
        this.business = business;
-       this.tracker = tracker;
+       this.trackerUrl = trackerUrl;
        this.type = type;
-       this.url = url;
+       this.fullUrl = fullUrl;
     }
    
     public Integer getId() {
@@ -39,26 +39,26 @@ public class TrackerBusiness  implements java.io.Serializable {
     public void setBusiness(Business business) {
         this.business = business;
     }
-    public Tracker getTracker() {
-        return this.tracker;
+    public String getTrackerUrl() {
+        return this.trackerUrl;
     }
     
-    public void setTracker(Tracker tracker) {
-        this.tracker = tracker;
+    public void setTrackerUrl(String trackerUrl) {
+        this.trackerUrl = trackerUrl;
     }
-    public Integer getType() {
+    public String getType() {
         return this.type;
     }
     
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
-    public String getUrl() {
-        return this.url;
+    public String getFullUrl() {
+        return this.fullUrl;
     }
     
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFullUrl(String fullUrl) {
+        this.fullUrl = fullUrl;
     }
 
 

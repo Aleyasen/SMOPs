@@ -8,26 +8,32 @@ package smops.dao;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.jxpath.ri.compiler.Constant;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import smops.Constants;
 import smops.HibernateUtil;
+import smops.Utils;
 import smops.hibernate.Business;
 import smops.hibernate.Field;
 import smops.hibernate.Form;
+import smops.hibernate.JsLib;
 
 /**
  *
  * @author Aale
  */
 public class BusinessManager {
+
+    static List<String> websitesForTest = Arrays.asList("denimexpress.com", "fivecentnickel.com", "sprucecreekonline.com", "rockinghamtoyota.com", "cefaly.us", "worthynews.com", "agusti2.eu", "breckenridgefineart.org", "daamusic.org", "floridamarinetanks.com", "http.com", "lomaricareliefsociety.org", "nhltorrents.co.uk", "radonzone.com", "spiritfireimages.com", "tubeomega.com", "wildyoats.com", "wguc.com", "goalmascots.com", "emmawatsonofficial.com", "lastbottlewines.com", "ghthealth.com", "onhandsoftware.com", "prier.com", "digitalpeddler.com", "lymenet.nl", "yaho.cm", "russellbrand.com", "hiff.org", "republicanoperative.com", "themailboxcompanion.com", "sweeney-emporium.com", "refrigerationsupply.com", "crystalmccallsoldteam.com", "literaryservicesinc.com", "woodstockgroundhog.org", "ronique.net", "peteranswers.com", "acsedu.com", "kaiserslauternamerican.com", "metalwareprollectibles.com", "505turbo.com", "bunchesmore.com", "marsels.com", "geniusbrainpower.com", "eachedule.com", "christianhubert.com", "localjobcentral.com", "walking-pneumonia.org", "topcarwarranty.com", "medi-syn.com", "hvacfun.com", "electroniccigarettesale.net", "almustaqbal.com", "tennesseejones.com", "stepinsally.com", "stih-schnock.de", "kolstermbakery.com", "itbegins2012.com", "rangemasterfence.com", "amotostuff.com", "vanguaerdgroup.com", "southharrisonwater.com", "luxembourg-paris-hotel.com", "thehighlinehotel.com", "vancouvertours.net", "everythingfinancialradio.com", "hrpharma.com", "okterritorialmuseum.org", "turistinka.ru", "creampiemovie.org", "electricity.cm", "centraldrugspdx.com", "cricklers.com", "ghbcc.com", "prairieviewanimalhospital.com", "stonecreektrading.com", "usajeruty.pl", "fleamarketnewsonline.com", "hoppeidustries.com", "sensaul.com", "claytonofknoxville.com", "astonishcleaners.com", "discovergold.org", "copesaddlery.com", "jimfalkmotorsofmaui.com", "fatpleasure.com", "houseofjameson.com", "filmforallnyc.com", "gtrlc.org", "yourlivedigest.com", "b5b581a15e.com", "ab4bj.com", "discountitemstore.com", "aurorapower.net", "visitlakemichiganlighthouses.com", "capitol360.com", "guildwars2hub.com", "downloadfreegames.dk", "burn-iso.com");
 
     public static List<Business> getBusinesses(int offset, int limit) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -105,12 +111,28 @@ public class BusinessManager {
     }
 
     public static void prepareTableReport(int offset, int limit) {
-        JSONArray all_json = new JSONArray();
         final List<Business> bizs = getBusinesses(offset, limit);
+        prepareTableReport(bizs);
+    }
+
+    public static void prepareTableReportByWebsites(List<String> websites) {
+        List<Business> bizs = new ArrayList();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        for (String website : websites) {
+            final Business biz = BusinessManager.getByWebsite(website, session);
+            bizs.add(biz);
+        }
+        System.out.println("business#: " + bizs.size());
+        prepareTableReport(bizs);
+    }
+
+    public static void prepareTableReport(List<Business> bizs) {
+        JSONArray all_json = new JSONArray();
         for (Business biz : bizs) {
-            if (getValidFormsCount(biz) == 0) {
-                continue;
-            }
+//            if (getValidFormsCount(biz) == 0) {
+//                continue;
+//            }
 //            System.out.println("");
 //            System.out.println("[" + biz.getName() + "] " + biz.getUrl());
             JSONObject biz_json = new JSONObject();
@@ -119,9 +141,9 @@ public class BusinessManager {
             JSONArray forms_json = new JSONArray();
             for (Object f : biz.getForms()) {
                 Form form = (Form) f;
-                if (!form.getPurpose().equals("unknown")) {
-                    continue;
-                }
+//                if (!form.getPurpose().equals("unknown")) {
+//                    continue;
+//                }
                 JSONObject f_json = new JSONObject();
                 f_json.put("page_url", " " + form.getPageUrl() + " ");
                 f_json.put("purpose", form.getPurpose());
@@ -184,8 +206,55 @@ public class BusinessManager {
         return websites;
     }
 
+    public static void saveBusinessesFromFile(String filename) {
+        final List<String> list = Utils.readFileLineByLine(filename);
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        for (String website : list) {
+            Business biz = new Business();
+            biz.setWebsite(website);
+            biz.setDomain(website);
+            biz.setSource("QUANTCAST");
+            session.save(biz);
+        }
+        session.getTransaction().commit();
+    }
+
+    public static Business getByWebsite(String website, Session session) {
+        Criteria criteria = session.createCriteria(Business.class);
+        Business biz = (Business) criteria.add(Restrictions.eq("website", website)).uniqueResult();
+        return biz;
+    }
+
+    public static void updateBusinessRanks(String filename) {
+        final List<String> list = Utils.readFileLineByLine(filename);
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        int rank = 1;
+        for (String website : list) {
+            System.out.println("website=" + website);
+            Business biz = getByWebsite(website, session);
+            if (biz != null) {
+                System.out.println("biz=" + biz.getId() + " " + biz.getWebsite());
+                session.beginTransaction();
+                biz.setRank(rank);
+                session.saveOrUpdate(biz);
+                System.out.println("Rank for business " + biz.getId() + " updated to " + rank);
+                session.getTransaction().commit();
+                rank++;
+            } else {
+                System.out.println("business for website " + website + " is null.");
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        prepareTableReport(100, 100);
+        updateBusinessRanks("1000-websites/websites_1000.txt");
+//        prepareTableReportByWebsites(websitesForTest);
+//        saveBusinessesFromFile("1000-websites/websites_1000.txt");
+//        prepareTableReport(100, 100);
 //        final List<Business> biz = getBusinesses(0, 100);
 //        System.out.println(biz);
     }

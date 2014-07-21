@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated Jul 15, 2014 3:02:41 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-    <class name="smops.hibernate.JsLib" table="js_lib">
+    <class name="smops.hibernate.JsLib" table="js_lib" catalog="smops_db">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
         <property name="name" type="string">
-            <column name="name" length="256" />
+            <column name="name" />
         </property>
         <property name="libVersion" type="string">
-            <column name="lib_version" length="256" />
+            <column name="lib_version" />
         </property>
         <property name="fullname" type="string">
-            <column name="fullname" length="256" />
+            <column name="fullname" />
         </property>
         <property name="type" type="string">
-            <column name="type" length="256" />
+            <column name="type" />
         </property>
         <set name="jsBusinesses" table="js_business" inverse="true" lazy="true" fetch="select">
             <key>

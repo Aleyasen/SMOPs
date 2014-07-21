@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package smops.crawlerfromfile;
+package smops.servertype;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -22,34 +22,35 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.IO;
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import org.apache.http.Header;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import smops.HibernateUtil;
 
 import smops.Utils;
+import smops.dao.BusinessManager;
+import smops.hibernate.Business;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
-public class BasicCrawlerFromFile extends WebCrawler {
+public class CrawlerForServerType extends WebCrawler {
 
     static String rootFolderName;
     static File rootFolder;
     static String result_file;
     static Set<String> validDomains;
-    static Map<String, Integer> websitesPagesCount;
-    static Set<String> overPagesWebsites;
-    static int overPagesLimit = 1000;
+
+    static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    static Session session = sessionFactory.openSession();
 
     public static void configure(String rootFolderName, String result_file, Set<String> validDomns) {
         System.out.println("start configuring...");
-        BasicCrawlerFromFile.result_file = result_file;
-        BasicCrawlerFromFile.rootFolderName = rootFolderName;
-        BasicCrawlerFromFile.validDomains = validDomns;
-        BasicCrawlerFromFile.websitesPagesCount = new HashMap<>();
-        BasicCrawlerFromFile.overPagesWebsites = new HashSet<>();
-        rootFolder = new File(BasicCrawlerFromFile.rootFolderName);
+        CrawlerForServerType.result_file = result_file;
+        CrawlerForServerType.rootFolderName = rootFolderName;
+        CrawlerForServerType.validDomains = validDomns;
+        rootFolder = new File(CrawlerForServerType.rootFolderName);
         if (!rootFolder.exists()) {
             rootFolder.mkdirs();
         }
@@ -66,22 +67,13 @@ public class BasicCrawlerFromFile extends WebCrawler {
     public boolean shouldVisit(WebURL url) {
 
         String href = url.getURL().toLowerCase();
-        String domain = url.getDomain();
+
         if (href.contains(".css") || href.contains(".js")) {
             return false;
-        }
-
-        if (!validDomains.contains(domain)) {
-            System.out.println("ignoreV " + url);
-            return false;
-        }
-        if (overPagesWebsites.contains(domain)) {
-            System.out.println("overV " + url);
-            return false;
-        }
-
+        } else {
 //            System.out.println("shoudVisit=" + url);
-        return true;
+            return true;
+        }
     }
 
     /**
@@ -96,13 +88,14 @@ public class BasicCrawlerFromFile extends WebCrawler {
 //        System.out.println("starting visit");
         String url = page.getWebURL().getURL();
         int docid = page.getWebURL().getDocid();
+        final short depth = page.getWebURL().getDepth();
+//        System.out.println("depth=" + depth);
+        if (depth > 0) {
+            return;
+        }
         String domain = page.getWebURL().getDomain();
         if (!validDomains.contains(domain)) {
             System.out.println("ignore " + url);
-            return;
-        }
-        if (overPagesWebsites.contains(domain)) {
-            System.out.println("over " + url);
             return;
         }
         String path = page.getWebURL().getPath();
@@ -127,38 +120,30 @@ public class BasicCrawlerFromFile extends WebCrawler {
 //            System.out.println("Text length: " + text.length());
 //            System.out.println("Html length: " + html.length());
 //            System.out.println("Number of outgoing links: " + links.size());
-            String flat_path = path.replaceAll("/", "-");
-            String flat_domain = domain.replaceAll("/", "-");
-            flat_path = flat_path.substring(1, flat_path.length());
-            final String website_path = rootFolder.getAbsolutePath() + "/" + flat_domain;
-            File website_path_file = new File(website_path);
-            if (!website_path_file.exists()) {
-                website_path_file.mkdirs();
-            }
-            final String file_path = website_path + "/" + flat_path + "-" + docid + ".html";
-            String crawl_info_line = domain + "\t" + url + "\t" + file_path + "\n";
-            Utils.writeDataIntoFile(crawl_info_line, result_file);
-            IO.writeBytesToFile(html.getBytes(), file_path);
-            Integer oldPCount = websitesPagesCount.get(domain);
-            if (oldPCount == null) {
-                oldPCount = 0;
-                websitesPagesCount.put(domain, 0);
-            }
-            oldPCount++; // now it's new value
-            websitesPagesCount.put(domain, oldPCount);
-            if (oldPCount > overPagesLimit) {
-                overPagesWebsites.add(domain);
-            }
         }
 
-//        Header[] responseHeaders = page.getFetchResponseHeaders();
-//
-//        if (responseHeaders != null) {
-//            System.out.println("Response headers:");
-//            for (Header header : responseHeaders) {
+        Header[] responseHeaders = page.getFetchResponseHeaders();
+
+        if (responseHeaders != null) {
+            System.out.println("Response headers:");
+            for (Header header : responseHeaders) {
 //                System.out.println("\t" + header.getName() + ": " + header.getValue());
-//            }
-//        }
-//        System.out.println("=============");
+                if (header.getName().toLowerCase().equals("server")) {
+                    System.out.println("domain=" + domain);
+                    Business biz = BusinessManager.getByWebsite(domain, session);
+                    if (biz == null) {
+                        System.out.println("biz is null!");
+                    } else {
+                        System.out.println("biz_id=" + biz.getId());
+                        session.beginTransaction();
+                        biz.setServerType(header.getValue());
+                        System.out.println("server type set to " + header.getValue());
+                        session.save(biz);
+                        session.getTransaction().commit();
+                    }
+                }
+            }
+        }
+        System.out.println("=============");
     }
 }

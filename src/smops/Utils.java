@@ -7,9 +7,12 @@ package smops;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -44,13 +47,29 @@ public class Utils {
     }
 
     public static List<String> readFileLineByLine(String filepath) {
+        return readFileLineByLine(filepath, null);
+    }
+
+    public static List<String> readFileLineByLine(String filepath, Integer limit) {
+        int count = 0;
+        int max;
+        if (limit == null) {
+            max = Integer.MAX_VALUE;
+        } else {
+            max = limit;
+        }
         List<String> lines = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String line = br.readLine();
+            count++;
             while (line != null) {
                 lines.add(line);
                 line = br.readLine();
+                count++;
+                if (count > max) {
+                    break;
+                }
             }
             br.close();
             return lines;
@@ -73,10 +92,10 @@ public class Utils {
     }
 
     public static void main(String[] args) {
-        System.out.println(matchJsLib("js/jquery.shuffle.js?DE"));
+        splitFile("1000-websites\\websites_1000.txt", "1000-websites\\split", 50);
+//        System.out.println(matchJsLib("js/jquery.shuffle.js?DE"));
 
-        System.out.println(matchJsLib("js/jquery.shuffle.jsp"));
-
+//        System.out.println(matchJsLib("js/jquery.shuffle.jsp"));
     }
 
     public static String getDomain(String url) {
@@ -95,5 +114,35 @@ public class Utils {
         }
         System.out.println(domain_str);
         return domain_str;
+    }
+
+    public static void splitFile(String inputfile, String outputfilePrefix, int inEachFile) {
+        PrintWriter writer = null;
+        try {
+            final List<String> lines = Utils.readFileLineByLine(inputfile);
+            int index = 0;
+
+            int fileIndex = 1;
+            String outputfile = outputfilePrefix + "-" + fileIndex + ".txt";
+            writer = new PrintWriter(outputfile);
+            while (true) {
+                if (index >= lines.size()) {
+                    writer.close();
+                    break;
+                }
+                writer.println(lines.get(index));
+                index++;
+                if (index % inEachFile == 0) {
+                    fileIndex++;
+                    writer.close();
+                    outputfile = outputfilePrefix + "-" + fileIndex + ".txt";
+                    writer = new PrintWriter(outputfile);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            writer.close();
+        }
     }
 }

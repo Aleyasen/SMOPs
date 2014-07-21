@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package smops.crawlerfromfile;
+package smops.servertype;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -27,38 +27,35 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import smops.HibernateUtil;
 import smops.Utils;
+import smops.dao.BusinessManager;
+import smops.hibernate.Business;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
-public class BasicCrawlControllerFromFile {
+public class CrawlerControllerForServerType {
 
     static String crawlDataIntermediateDir = "crawl-int";
 
+    static int limit = Integer.MAX_VALUE;
+
+    static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    static Session session = sessionFactory.openSession();
+
     public static void main(String[] args) {
 //
-        String rootFolder = "crawl-10000";
-        String resultFile = "crawled-list-10000.txt";
-        final List<String> websites = Utils.readFileLineByLine("websites_10000.txt");
+        String rootFolder = "temp11";
+        String resultFile = "crawled-list-1000-temp11.txt";
+        final List<String> websites = Utils.readFileLineByLine("1000-websites\\websites_1000.txt", limit);
         Set<String> validWebsites = new HashSet<>(websites);
-        int offset = 1300;
-        int max = 10000;
-        int limit = 100;
-        while (true) {
-            if (offset == max) {
-                break;
-            }
-            if (offset > max) {
-                offset = max;
-            }
-            System.out.println(">>>>>>>>>>>>>>>>>>>> offset=" + offset + " limit=" + limit);
-            crawl(rootFolder, 100, resultFile, validWebsites, offset, limit);
-            offset += limit;
-        }
+        crawl(rootFolder, 1, resultFile, validWebsites);
     }
 
-    public static void crawl(String rootFolder, int numberOfCrawlers, String result_file, Set<String> validDomains, int offset, int limit) {
+    public static void crawl(String rootFolder, int numberOfCrawlers, String result_file, Set<String> validDomains) {
 
         try {
             /*
@@ -81,22 +78,20 @@ public class BasicCrawlControllerFromFile {
              * second (500 milliseconds between requests).
              */
             config.setPolitenessDelay(50);
-            
-            config.setMaxOutgoingLinksToFollow(100);
 
             /*
              * You can set the maximum crawl depth here. The default value is -1 for
              * unlimited depth
              */
-            config.setMaxDepthOfCrawling(2);
+            config.setMaxDepthOfCrawling(1);
+            
+//            config.setConnectionTimeout(limit);
 
             /*
              * You can set the maximum number of pages to crawl. The default value
              * is -1 for unlimited number of pages
              */
             config.setMaxPagesToFetch(-1);
-            
-
 
             /*
              * Do you need to set a proxy? If so, you can use:
@@ -128,13 +123,17 @@ public class BasicCrawlControllerFromFile {
              * URLs that are fetched and then the crawler starts following links
              * which are found in these pages
              */
-            final List<String> all_websites = Utils.readFileLineByLine("websites_10000.txt");
-            List<String> websites_for_this_run = new ArrayList<String>();
-            for (int i = offset; i < offset + limit; i++) {
-                websites_for_this_run.add(all_websites.get(i));
+            final List<String> websites = Utils.readFileLineByLine("1000-websites\\websites_1000.txt", limit);
+            List<String> seedsWebsites = new ArrayList<>();
+            for (String w : websites) {
+                Business biz = BusinessManager.getByWebsite(w, session);
+                if (biz.getServerType() == null) {
+                    seedsWebsites.add(w);
+                }
             }
-            int counter = 1;
-            for (String w : websites_for_this_run) {
+            int counter = 0;
+            System.out.println("Websites# : " + seedsWebsites.size());
+            for (String w : seedsWebsites) {
                 String w_str = "http://www." + w;
                 controller.addSeed(w_str);
                 System.out.println(counter + " ) added website: " + w_str);
@@ -145,10 +144,10 @@ public class BasicCrawlControllerFromFile {
              * Start the crawl. This is a blocking operation, meaning that your code
              * will reach the line after this only when crawling is finished.
              */
-            BasicCrawlerFromFile.configure(rootFolder, result_file, validDomains);
-            controller.start(BasicCrawlerFromFile.class, numberOfCrawlers);
+            CrawlerForServerType.configure(rootFolder, result_file, validDomains);
+            controller.start(CrawlerForServerType.class, numberOfCrawlers);
         } catch (Exception ex) {
-            Logger.getLogger(BasicCrawlControllerFromFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrawlerControllerForServerType.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

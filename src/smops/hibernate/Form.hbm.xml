@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated Jul 15, 2014 3:02:41 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-    <class name="smops.hibernate.Form" table="form">
+    <class name="smops.hibernate.Form" table="form" catalog="smops_db">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -12,22 +12,22 @@
             <column name="business" />
         </many-to-one>
         <property name="action" type="string">
-            <column name="action" length="1024" />
+            <column name="action" />
         </property>
         <property name="pageUrl" type="string">
-            <column name="page_url" length="512" />
+            <column name="page_url" />
         </property>
         <property name="title" type="string">
-            <column name="title" length="2048" />
+            <column name="title" />
         </property>
         <property name="html" type="string">
-            <column name="html" length="65535" />
+            <column name="html" />
         </property>
         <property name="purpose" type="string">
             <column name="purpose" length="128" />
         </property>
         <property name="fileName" type="string">
-            <column name="file_name" length="512" />
+            <column name="file_name" />
         </property>
         <set name="fields" table="field" inverse="true" lazy="true" fetch="select">
             <key>

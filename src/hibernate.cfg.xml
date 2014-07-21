@@ -13,13 +13,13 @@
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>
     <!-- Drop and re-create the database schema on startup -->
-    <property name="hbm2ddl.auto">update</property>
-    <mapping resource="smops/hibernate/TrackerBusiness.hbm.xml"/>
-    <mapping resource="smops/hibernate/Tracker.hbm.xml"/>
-    <mapping resource="smops/hibernate/JsBusiness.hbm.xml"/>
+    <property name="hbm2ddl.auto">none</property>
     <mapping resource="smops/hibernate/Business.hbm.xml"/>
+    <mapping resource="smops/hibernate/Field.hbm.xml"/>
+    <mapping resource="smops/hibernate/SealBusiness.hbm.xml"/>
+    <mapping resource="smops/hibernate/JsBusiness.hbm.xml"/>
+    <mapping resource="smops/hibernate/TrackerBusiness.hbm.xml"/>
     <mapping resource="smops/hibernate/Form.hbm.xml"/>
     <mapping resource="smops/hibernate/JsLib.hbm.xml"/>
-    <mapping resource="smops/hibernate/Field.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

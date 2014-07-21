@@ -1,5 +1,5 @@
 package smops.hibernate;
-// Generated Jun 19, 2014 11:11:54 AM by Hibernate Tools 3.6.0
+// Generated Jul 15, 2014 3:02:40 PM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
